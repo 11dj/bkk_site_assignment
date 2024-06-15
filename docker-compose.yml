@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  app:
+      container_name: backend
+      build:
+        context: ./backend
+        dockerfile: Dockerfile
+      environment:
+        DATABASE_NAME: nest
+        DATABASE_USER: root
+        DATABASE_PASS: P4ssw0rd!
+        DATABASE_URI: mongodb://database:27017
+      ports:
+        - '4433:3000'
+      depends_on:
+        - database
+        - mongorestore
+  mongorestore:
+    container_name: db_cold_restore
+    image: mongo:6.0
+    depends_on:
+      - database
+    volumes:
+      - ./dump:/data/dump
+    entrypoint: >
+      bash -c "
+      sleep 20;
+      mongorestore --host mongodb --port 27017 -u root -p P4ssw0rd! --authenticationDatabase admin --db nest --archive < /data/dump/dump.gz
+      "
+  database:
+      image: mongo:6.0
+      hostname: mongodb
+      container_name: mongodb
+      restart: always
+      ports:
+        - '27017:27017'
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: P4ssw0rd!
+networks:
+  default:
+    name: nestjs_dev_network
