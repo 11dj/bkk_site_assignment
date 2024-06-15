@@ -23,6 +23,41 @@ The Flutter project is located in the `bkk_drugstore_app` directory.
     cd bkk_drugstore_app
     ```
 
+###  Enable Google Map SDK for each platform 
+
+### Android
+Specify your Google Maps API key in the application manifest `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<manifest ...
+  <application ...
+    <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="YOUR KEY HERE"/>
+```
+
+### iOS
+Specify your Google Maps API key in the application delegate `ios/Runner/AppDelegate.swift`:
+
+```swift
+import UIKit
+import Flutter
+import GoogleMaps
+
+@UIApplicationMain
+@objc class AppDelegate: FlutterAppDelegate {
+  override func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    GMSServices.provideAPIKey("YOUR KEY HERE")
+    GeneratedPluginRegistrant.register(with: self)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+}
+```
+
+### Web
+
 2. Get the required dependencies:
 
     ```sh
@@ -37,10 +72,7 @@ The Flutter project is located in the `bkk_drugstore_app` directory.
 
 ## Docker Setup
 
-The Docker setup is located in the `backend` directory.
-
 ### Running the Docker Container
-
 
 1. Run the Docker container:
 
