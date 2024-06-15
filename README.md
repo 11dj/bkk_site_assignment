@@ -56,8 +56,6 @@ import GoogleMaps
 }
 ```
 
-### Web
-
 2. Get the required dependencies:
 
     ```sh
